@@ -1,0 +1,9 @@
+<launch>
+    
+    <param name="/use_sim_time" value="true" />
+    <node pkg="kinematic_model" type="kinematic_model_node" name="kinematic_model" output="screen">
+        <param name="L" value="3.4"/>
+        <param name="dt" value="0.033"/>
+    </node>
+
+</launch>

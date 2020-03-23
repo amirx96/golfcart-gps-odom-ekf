@@ -1,0 +1,16 @@
+
+<launch>
+    <param name="/use_sim_time" value="true" />
+	<node pkg="gps_measurement" type="gps2xy.py" name="gps2xy"  output="screen" />
+	<node pkg="gps_measurement" type="path_publisher_node" name="path_publisher_node"  output="screen" />
+
+    <node pkg="kinematic_model" type="kinematic_model_node" name="kinematic_model" output="screen">
+        <param name="L" value="3.4"/>
+        <param name="dt" value="0.033"/>
+    </node>
+
+	<node pkg="kalman_filter" type="kalman_filter_node" name="kalman_filter"  output="screen" >
+	      <param name="L" value="3.4"/>
+          <param name="dt" value="0.033"/>
+	</node>
+</launch>
