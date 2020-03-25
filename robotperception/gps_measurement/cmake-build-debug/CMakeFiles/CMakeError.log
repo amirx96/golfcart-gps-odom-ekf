@@ -1,0 +1,63 @@
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/usl/catkin_ws/src/robotperception/gps_measurement/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_c91e3/fast && /usr/bin/make -f CMakeFiles/cmTC_c91e3.dir/build.make CMakeFiles/cmTC_c91e3.dir/build
+make[1]: Entering directory '/home/usl/catkin_ws/src/robotperception/gps_measurement/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c91e3.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_c91e3.dir/src.c.o   -c /home/usl/catkin_ws/src/robotperception/gps_measurement/cmake-build-debug/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_c91e3
+/opt/clion-2019.3.5/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c91e3.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_c91e3.dir/src.c.o  -o cmTC_c91e3 
+CMakeFiles/cmTC_c91e3.dir/src.c.o: In function `main':
+src.c:(.text+0x3c): undefined reference to `pthread_create'
+src.c:(.text+0x48): undefined reference to `pthread_detach'
+src.c:(.text+0x59): undefined reference to `pthread_join'
+src.c:(.text+0x6d): undefined reference to `pthread_atfork'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_c91e3.dir/build.make:86: recipe for target 'cmTC_c91e3' failed
+make[1]: *** [cmTC_c91e3] Error 1
+make[1]: Leaving directory '/home/usl/catkin_ws/src/robotperception/gps_measurement/cmake-build-debug/CMakeFiles/CMakeTmp'
+Makefile:121: recipe for target 'cmTC_c91e3/fast' failed
+make: *** [cmTC_c91e3/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/usl/catkin_ws/src/robotperception/gps_measurement/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_8abb5/fast && /usr/bin/make -f CMakeFiles/cmTC_8abb5.dir/build.make CMakeFiles/cmTC_8abb5.dir/build
+make[1]: Entering directory '/home/usl/catkin_ws/src/robotperception/gps_measurement/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8abb5.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_8abb5.dir/CheckFunctionExists.c.o   -c /opt/clion-2019.3.5/bin/cmake/linux/share/cmake-3.15/Modules/CheckFunctionExists.c
+Linking C executable cmTC_8abb5
+/opt/clion-2019.3.5/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8abb5.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_8abb5.dir/CheckFunctionExists.c.o  -o cmTC_8abb5 -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_8abb5.dir/build.make:86: recipe for target 'cmTC_8abb5' failed
+make[1]: *** [cmTC_8abb5] Error 1
+make[1]: Leaving directory '/home/usl/catkin_ws/src/robotperception/gps_measurement/cmake-build-debug/CMakeFiles/CMakeTmp'
+Makefile:121: recipe for target 'cmTC_8abb5/fast' failed
+make: *** [cmTC_8abb5/fast] Error 2
+
+
+

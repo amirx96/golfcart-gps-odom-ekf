@@ -56,12 +56,20 @@ private:
 
     // Kalman Gain
     Eigen::MatrixXd K;
+
+    // Noise Params
+    double q00, q11;
+    double r00, r11;
 public:
     kalmanFilterNode(ros::NodeHandle( n)) {
         nh = n;
         node_name = ros::this_node::getName();
         L = readParam<double>(nh, "L");
         dt = readParam<double>(nh, "dt");
+        q00 = readParam<double>(nh, "q00");
+        q11 = readParam<double>(nh, "q11");
+        r00 = readParam<double>(nh, "r00");
+        r11 = readParam<double>(nh, "r11");
 
         velocity_sub = new message_filters::Subscriber<pacmod_msgs::VehicleSpeedRpt>(nh, "/pacmod/parsed_tx/vehicle_speed_rpt", 1);
         steering_sub = new message_filters::Subscriber<pacmod_msgs::SystemRptFloat>(nh, "/pacmod/parsed_tx/steer_rpt", 1);
@@ -69,16 +77,16 @@ public:
         sync->registerCallback(boost::bind(&kalmanFilterNode::controlCallback, this, _1, _2));
 
         gpsPose_sub = nh.subscribe("/gps_pose", 1, &kalmanFilterNode::measurementCallback, this);
-        
+
         pose_pub = nh.advertise<geometry_msgs::PoseStamped>("/estimated_pose", 1);
         path_pub = nh.advertise<nav_msgs::Path>("/estimated_path", 1);
 
         Qk = Eigen::Matrix2d::Identity();
-        Qk(0, 0) = 1; // Tuning Paramater
-        Qk(1, 1) = 1; // Tuning Parameter
+        Qk(0, 0) = q00; // Tuning Paramater
+        Qk(1, 1) = q11; // Tuning Parameter
         Rk = Eigen::Matrix2d::Identity();
-        Rk(0, 0) = 1; // Tuning Parameter
-        Rk(1, 1) = 1; // Tuning Parameter
+        Rk(0, 0) = r00; // Tuning Parameter
+        Rk(1, 1) = r11; // Tuning Parameter
 
         x = y = theta = 0;
         P = Eigen::Matrix3d::Identity();

@@ -12,5 +12,9 @@
 	<node pkg="kalman_filter" type="kalman_filter_node" name="kalman_filter"  output="screen" >
 	      <param name="L" value="3.4"/>
           <param name="dt" value="0.033"/>
+          <param name="q00" value="1"/>
+          <param name="q11" value="1"/>
+          <param name="r00" value="1"/>
+          <param name="r11" value="1"/>
 	</node>
 </launch>
