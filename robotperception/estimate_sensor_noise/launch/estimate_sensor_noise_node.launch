@@ -1,0 +1,8 @@
+
+<launch>
+    <param name="/use_sim_time" value="true" />
+
+    <node pkg="estimate_sensor_noise" type="estimate_sensor_noise_node" name="estimate_sensor_noise"  output="screen" >
+    </node>
+
+</launch>

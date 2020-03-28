@@ -328,6 +328,9 @@
       <workItem from="1584943006537" duration="2857000" />
       <workItem from="1584981372224" duration="3348000" />
       <workItem from="1585074746517" duration="172000" />
+      <workItem from="1585103214900" duration="88000" />
+      <workItem from="1585103346493" duration="1859000" />
+      <workItem from="1585195107075" duration="4000" />
     </task>
     <servers />
   </component>
@@ -335,17 +338,18 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1055" y="214" key="#Inspections" timestamp="1584947039152">
-      <screen x="65" y="24" width="1855" height="1056" />
+    <state x="2945" y="194" key="#Inspections" timestamp="1585103242461">
+      <screen x="1920" y="0" width="1920" height="1080" />
     </state>
+    <state x="2945" y="194" key="#Inspections/65.24.1855.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585103242461" />
     <state x="1055" y="214" key="#Inspections/65.24.1855.1056@65.24.1855.1056" timestamp="1584947039152" />
     <state x="3164" y="311" key="FileChooserDialogImpl" timestamp="1584984859591">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="3164" y="311" key="FileChooserDialogImpl/65.24.1855.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1584984859591" />
-    <state x="3037" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1584981373268">
+    <state x="3037" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1585103347046">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="3037" y="380" key="com.intellij.ide.util.TipDialog/65.24.1855.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1584981373268" />
+    <state x="3037" y="380" key="com.intellij.ide.util.TipDialog/65.24.1855.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585103347046" />
   </component>
 </project>

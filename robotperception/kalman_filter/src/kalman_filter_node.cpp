@@ -58,14 +58,20 @@ private:
     Eigen::MatrixXd K;
 
     // Noise Params
+    double p00, p11;
     double q00, q11;
     double r00, r11;
+
+    //counter
+    int count;
 public:
     kalmanFilterNode(ros::NodeHandle( n)) {
         nh = n;
         node_name = ros::this_node::getName();
         L = readParam<double>(nh, "L");
         dt = readParam<double>(nh, "dt");
+        p00 = readParam<double>(nh, "p00");
+        p11 = readParam<double>(nh, "p11");
         q00 = readParam<double>(nh, "q00");
         q11 = readParam<double>(nh, "q11");
         r00 = readParam<double>(nh, "r00");
@@ -90,7 +96,11 @@ public:
 
         x = y = theta = 0;
         P = Eigen::Matrix3d::Identity();
+        P(0, 0) = p00;
+        P(1, 1) = p11;
         K = Eigen::MatrixXd(3, 2);
+
+        count= 0;
     }
 
     template <typename T>
@@ -134,6 +144,7 @@ public:
 
     void controlCallback(const pacmod_msgs::VehicleSpeedRptConstPtr &velocity_msg,
                   const pacmod_msgs::SystemRptFloatConstPtr &steering_msg) {
+        ROS_INFO_STREAM("Prediction");
         time_stamp = velocity_msg->header.stamp;
         pacmod_msgs::VehicleSpeedRpt velocity_data = *velocity_msg;
         pacmod_msgs::SystemRptFloat steering_data = *steering_msg;
@@ -160,29 +171,35 @@ public:
         P = Ak*P*Ak.transpose() + Bk*Qk*Bk.transpose();
         posePublisher();
         pathPublisher();
+        count++;
     }
 
     void measurementCallback(const geometry_msgs::PoseStampedConstPtr &pose_msg) {
-        time_stamp = pose_msg->header.stamp;
-        geometry_msgs::PoseStamped gpsPose_data = *pose_msg;
-        Hk = Eigen::MatrixXd(2, 3);
-        Hk << 1, 0, 0,
-                0, 1, 0;
-        Eigen::MatrixXd Sk(2, 2);
-        Sk = Hk*P*Hk.transpose() + Rk;
-        K = P*Hk.transpose()*Sk.inverse();
-        Eigen::Vector2d measurement = Eigen::Vector2d(gpsPose_data.pose.position.x, gpsPose_data.pose.position.y);
-        Eigen::Vector3d predicted_state = Eigen::Vector3d(x, y, theta);
-        Eigen::Vector2d innovation = measurement - Hk*predicted_state;
-        Eigen::Vector3d estimated_state = predicted_state + K*innovation;
-        P = P - K*Hk*P;
-        P = 0.5*(P+P.transpose());// To ensure P is symmetric
-        x = estimated_state(0);
-        y = estimated_state(1);
-        theta = estimated_state(2);
-
-        posePublisher();
-        pathPublisher();
+        if(count == 5) {
+            ROS_INFO_STREAM("Measurement");
+            ROS_INFO_STREAM("trace(P) before incorporating measurement: " << P.trace());
+            time_stamp = pose_msg->header.stamp;
+            geometry_msgs::PoseStamped gpsPose_data = *pose_msg;
+            Hk = Eigen::MatrixXd(2, 3);
+            Hk << 1, 0, 0,
+                    0, 1, 0;
+            Eigen::MatrixXd Sk(2, 2);
+            Sk = Hk*P*Hk.transpose() + Rk;
+            K = P*Hk.transpose()*Sk.inverse();
+            Eigen::Vector2d measurement = Eigen::Vector2d(gpsPose_data.pose.position.x, gpsPose_data.pose.position.y);
+            Eigen::Vector3d predicted_state = Eigen::Vector3d(x, y, theta);
+            Eigen::Vector2d innovation = measurement - Hk*predicted_state;
+            Eigen::Vector3d estimated_state = predicted_state + K*innovation;
+            P = P - K*Hk*P;
+            P = 0.5*(P+P.transpose());// To ensure P is symmetric
+            ROS_INFO_STREAM("trace(P) after incorporating measurement: " << P.trace());
+            x = estimated_state(0);
+            y = estimated_state(1);
+            theta = estimated_state(2);
+            posePublisher();
+            pathPublisher();
+            count = 0;
+        }
     }
 };
 

@@ -12,9 +12,12 @@
 	<node pkg="kalman_filter" type="kalman_filter_node" name="kalman_filter"  output="screen" >
 	      <param name="L" value="3.4"/>
           <param name="dt" value="0.033"/>
-          <param name="q00" value="1"/>
-          <param name="q11" value="1"/>
-          <param name="r00" value="1"/>
-          <param name="r11" value="1"/>
+          <!-- Randomly choosing these numbers -->
+          <param name="p00" value="25"/>
+          <param name="p11" value="25"/>
+          <param name="q00" value="0.25"/>
+          <param name="q11" value="0.10"/>
+          <param name="r00" value="0.64"/>
+          <param name="r11" value="0.64"/>
 	</node>
 </launch>
