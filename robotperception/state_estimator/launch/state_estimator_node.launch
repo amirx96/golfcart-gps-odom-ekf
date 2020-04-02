@@ -1,0 +1,10 @@
+
+<launch>
+    <param name="/use_sim_time" value="true" />
+    <node pkg="gps_measurement" type="gps2xy.py" name="gps2xy"  output="screen" />
+    <node pkg="gps_measurement" type="path_publisher_node" name="path_publisher_node"  output="screen" />
+    <node pkg="state_estimator" type="state_estimator_node" name="state_estimator"  output="screen" >
+        <param name="acc_std" value="0.02"/>
+        <param name="gps_std" value="0.2"/>
+    </node>
+</launch>

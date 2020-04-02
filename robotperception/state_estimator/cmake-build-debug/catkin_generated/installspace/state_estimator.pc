@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: state_estimator
+Description: Description of state_estimator
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

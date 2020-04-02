@@ -1,0 +1,8 @@
+prefix=/home/usl/catkin_ws/src/robotperception/state_estimator/cmake-build-debug/devel
+
+Name: state_estimator
+Description: Description of state_estimator
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

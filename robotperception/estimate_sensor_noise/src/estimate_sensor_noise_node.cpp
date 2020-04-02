@@ -4,12 +4,15 @@
 
 
 #include "pacmod_msgs/VehicleSpeedRpt.h"
-#include "geometry_msgs/PoseStamped.h";
+#include "geometry_msgs/PoseStamped.h"
 #include "vn300/sensors.h"
 
 #include <message_filters/subscriber.h>
 #include <message_filters/synchronizer.h>
 #include <message_filters/sync_policies/approximate_time.h>
+
+#include <iostream>
+#include <fstream>
 
 #include <sstream>
 
@@ -78,6 +81,9 @@ public:
             ROS_ASSERT(acc_xyz_vec.size() == gps_xy_vec.size());
             int no_of_frames = acc_xyz_vec.size();
             if (no_of_frames > 300) {
+
+                std::ofstream file;
+                file.open("/home/usl/catkin_ws/src/robotperception/estimate_sensor_noise/results/accelgps.csv");
                 double mean_acc_x = 0;
                 double mean_acc_y = 0;
                 double mean_acc_z = 0;
@@ -89,7 +95,14 @@ public:
                     mean_acc_z += acc_xyz_vec[i].z();
                     mean_gps_x += gps_xy_vec[i].x();
                     mean_gps_y += gps_xy_vec[i].y();
+                    file << acc_xyz_vec[i].x() << ", "
+                         << acc_xyz_vec[i].y() << ", "
+                         << acc_xyz_vec[i].z() << ", "
+                         << gps_xy_vec[i].x() << ", "
+                         << gps_xy_vec[i].y() << std::endl;
                 }
+                file.close();
+                ROS_WARN_STREAM("Wrote to file");
                 mean_acc_x /= no_of_frames;
                 mean_acc_y /= no_of_frames;
                 mean_acc_z /= no_of_frames;
