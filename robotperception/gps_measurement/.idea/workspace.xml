@@ -69,7 +69,8 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../kinematic_model/CMakeLists.txt" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../state_estimator/CMakeLists.txt" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunManager" selected="CMake Application.path_publisher_node">
     <configuration name="actionlib_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="gps_measurement" TARGET_NAME="actionlib_msgs_generate_messages_cpp" CONFIG_NAME="Debug">
@@ -331,6 +332,11 @@
       <workItem from="1585103214900" duration="88000" />
       <workItem from="1585103346493" duration="1859000" />
       <workItem from="1585195107075" duration="4000" />
+      <workItem from="1585440116405" duration="2437000" />
+      <workItem from="1585460546930" duration="513000" />
+      <workItem from="1585503640876" duration="15577000" />
+      <workItem from="1585544947845" duration="797000" />
+      <workItem from="1585582739941" duration="1900000" />
     </task>
     <servers />
   </component>
@@ -343,13 +349,18 @@
     </state>
     <state x="2945" y="194" key="#Inspections/65.24.1855.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585103242461" />
     <state x="1055" y="214" key="#Inspections/65.24.1855.1056@65.24.1855.1056" timestamp="1584947039152" />
-    <state x="3164" y="311" key="FileChooserDialogImpl" timestamp="1584984859591">
+    <state x="3164" y="311" key="FileChooserDialogImpl" timestamp="1585583158241">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="3164" y="311" key="FileChooserDialogImpl/65.24.1855.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1584984859591" />
-    <state x="3037" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1585103347046">
+    <state x="3164" y="311" key="FileChooserDialogImpl/65.24.1855.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585583158241" />
+    <state x="606" y="311" key="FileChooserDialogImpl/65.24.1855.1056/1920.0.1920.1080@65.24.1855.1056" timestamp="1585543693846" />
+    <state x="2503" y="256" key="SettingsEditor" timestamp="1585440329156">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="3037" y="380" key="com.intellij.ide.util.TipDialog/65.24.1855.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585103347046" />
+    <state x="2503" y="256" key="SettingsEditor/65.24.1855.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585440329156" />
+    <state x="1144" y="396" key="com.intellij.ide.util.TipDialog" timestamp="1585503641909">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state x="1144" y="396" key="com.intellij.ide.util.TipDialog/65.24.1855.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585503641909" />
   </component>
 </project>
