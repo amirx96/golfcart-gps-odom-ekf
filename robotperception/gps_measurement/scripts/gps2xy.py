@@ -32,6 +32,7 @@ class gpsUtilities:
         lat = data.LLA.x
         long = data.LLA.y
         (easting, northing, zone_number, zone_letter) = utm.from_latlon(lat, long)
+        print np.array([easting, northing])
         yaw = -data.RPY.z*math.pi/180
         orientation_yaw = tf.transformations.quaternion_from_euler(0, 0, yaw)
         rotation_yaw = tf.transformations.quaternion_matrix(orientation_yaw)

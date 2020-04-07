@@ -1,8 +1,0 @@
-prefix=/home/usl/catkin_ws/src/robotperception/gps_measurement/cmake-build-debug/devel
-
-Name: gps_measurement
-Description: Description of gps_measurement
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
