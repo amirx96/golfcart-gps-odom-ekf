@@ -1,0 +1,8 @@
+prefix=/home/usl/catkin_ws/src/robotperception/bag2csv/cmake-build-debug/devel
+
+Name: bag2csv
+Description: Description of bag2csv
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
