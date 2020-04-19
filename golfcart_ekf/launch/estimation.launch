@@ -6,6 +6,6 @@
 
 	<node name="odom_to_path" pkg="golfcart_ekf" type="odom_to_path" output="screen"/>
 
-	<node pkg="rosbag" type="play" name="player" args="--clock /home/jacob/catkin_ws/src/golfcart-gps-odom-ekf/golfcart_ekf/bagfiles/2.bag"/>
+	<node pkg="rosbag" type="play" name="player" args="--clock $(find golfcart_ekf)/bagfiles/2.bag"/>
 
 </launch>
