@@ -20,7 +20,7 @@ class golfcart_ekf:
         self.L = 3.4 # wheelbase
         self.SR = 22 # steering ratio
         self.imu_x_offset = 0.0
-        self.imu_y_offset = 2.0
+        self.imu_y_offset = 0.0
 
         # create subscribers
         self.vn300_imu_sub      = rospy.Subscriber('/vectornav/imu',    sensors,    self.predict_step_imu)
@@ -152,6 +152,7 @@ class golfcart_ekf:
             self.lon_lat_init = True
             self.lat_home = msg.LLA.x
             self.lon_home = msg.LLA.y
+            rospy.loginfo("[ins_to_path] Initial LLA X %f, LLA Y %f",self.lat_home,self.lon_home)
 
         elif not msg.UtcTime.millisecond == self.last_gps_time:
             

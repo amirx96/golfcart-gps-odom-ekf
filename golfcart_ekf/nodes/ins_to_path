@@ -29,7 +29,7 @@ class OdomToPath:
             self.time_init = True
             self.lat_home = msg.LLA.x
             self.lon_home = msg.LLA.y
-
+            rospy.loginfo("[ins_to_path] Initial LLA X %f, LLA Y %f",self.lat_home,self.lon_home)
         else:
             # Ellipsoidal model calculation of Earth
             a = 6378137.0000
