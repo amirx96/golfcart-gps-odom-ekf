@@ -113,8 +113,8 @@ class golfcart_ekf:
         
         if self.pacmod_time_init:
 
-            z = np.array([  [speed_msg.vehicle_speed * math.cos(self.state[2])] + self.imu_x_offset, \
-                            [speed_msg.vehicle_speed * math.sin(self.state[2])] + self.imu_y_offset, \
+            z = np.array([  [speed_msg.vehicle_speed * math.cos(self.state[2]) + self.imu_x_offset] , \
+                            [speed_msg.vehicle_speed * math.sin(self.state[2]) + self.imu_y_offset] , \
                             [speed_msg.vehicle_speed / self.L * math.tan(steer_msg.output / self.SR) ] ])
 
             self.H_pcm = np.zeros([3,6])
