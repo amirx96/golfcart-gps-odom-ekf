@@ -35,8 +35,8 @@ class golfcart_ekf:
         self.path_pub  = rospy.Publisher('golfcart_ekf/combined_path',  Path,     queue_size=10, latch=True)
 
         self.state_odom = Odometry()
-        self.state_odom.header.frame_id = 'golfcart'
-        self.state_odom.child_frame_id  = 'world'
+        self.state_odom.header.frame_id = 'world'
+        self.state_odom.child_frame_id  = 'vectornav'
 
         self.br = tf.TransformBroadcaster()
         
@@ -180,11 +180,11 @@ class golfcart_ekf:
 
             self.state_pub.publish( self.state_odom )
 
-            self.br.sendTransform(( 0, 0, 0),
-                                    tf.transformations.quaternion_from_euler(0, 0, 0),
-                                    rospy.Time.now(),
-                                    self.state_odom.header.frame_id,
-                                    'world')
+            # self.br.sendTransform(( 0, 0, 0),
+            #                         tf.transformations.quaternion_from_euler(0, 0, 0),
+            #                         rospy.Time.now(),
+            #                         self.state_odom.header.frame_id,
+            #                         'world')
 
             rate.sleep()
 
