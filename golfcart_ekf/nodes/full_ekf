@@ -104,7 +104,12 @@ class golfcart_ekf:
 
             self.state[2] = (self.state[2][0] + math.pi) % (2* math.pi) - math.pi # wrap to 2pi
 
-            
+            self.state = np.matmul(F, self.state) + np.matmul(B, U)
+
+
+            self.state[2] = (self.state[2][0] + math.pi) % (2* math.pi) - math.pi # wrap to 2pi
+
+       
             # P_k|k-1 = F_k * P_k-1|k-1 * F_k^T + Q_k
             self.state_cov = np.matmul(F, np.matmul(self.state_cov, F.T)) + self.Q
 
