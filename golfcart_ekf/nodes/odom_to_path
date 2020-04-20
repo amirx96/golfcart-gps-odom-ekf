@@ -9,18 +9,33 @@ from vn300.msg          import gps, sensors
 
 class OdomToPath:
     def __init__(self):
-        self.odom_sub = rospy.Subscriber('/golfcart_ekf/state', Odometry, self.odom_cb, queue_size=10)
-        self.path_pub = rospy.Publisher( '/golfcart_ekf/path',  Path,       latch=True, queue_size=10)
-        self.path = Path()
+        self.odom_cb_sub = rospy.Subscriber('/golfcart_ekf/combined_state', Odometry, self.odom_cb, queue_size=10)
+        self.path_cb_pub = rospy.Publisher( '/golfcart_ekf/combined_path',  Path,       latch=True, queue_size=10)
+        self.path_cb = Path()
+
+        self.odom_fl_sub = rospy.Subscriber('/golfcart_ekf/state', Odometry, self.odom_fl, queue_size=10)
+        self.path_fl_pub = rospy.Publisher( '/golfcart_ekf/path',  Path,       latch=True, queue_size=10)
+        self.path_fl = Path()
+
 
     def odom_cb(self, msg):
         cur_pose = PoseStamped()
         cur_pose.header = msg.header
         cur_pose.pose = msg.pose.pose
-        self.path.header = msg.header
-        self.path.header.stamp = rospy.Time.now()
-        self.path.poses.append(cur_pose)
-        self.path_pub.publish(self.path)
+        self.path_cb.header = msg.header
+        self.path_cb.header.stamp = rospy.Time.now()
+        self.path_cb.poses.append(cur_pose)
+        self.path_cb_pub.publish(self.path_cb)
+
+
+    def odom_fl(self, msg):
+        cur_pose = PoseStamped()
+        cur_pose.header = msg.header
+        cur_pose.pose = msg.pose.pose
+        self.path_fl.header = msg.header
+        self.path_fl.header.stamp = rospy.Time.now()
+        self.path_fl.poses.append(cur_pose)
+        self.path_fl_pub.publish(self.path_fl)
 
 
 if __name__ == '__main__':

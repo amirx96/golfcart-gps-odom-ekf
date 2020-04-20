@@ -29,7 +29,7 @@ class OdomToPath:
             self.time_init = True
             self.lat_home = msg.LLA.x
             self.lon_home = msg.LLA.y
-
+            rospy.loginfo("[ins_to_path] Initial LLA X %f, LLA Y %f",self.lat_home,self.lon_home)
         else:
             # Ellipsoidal model calculation of Earth
             a = 6378137.0000
@@ -52,7 +52,7 @@ class OdomToPath:
             pose.header = msg.header
             pose.pose.position = point
 
-            self.path.header.frame_id = msg.header.frame_id
+            self.path.header.frame_id = 'world'
             self.path.header.stamp = rospy.Time.now()
             self.path.header.seq = msg.header.seq
             self.path.poses.append(pose)
@@ -67,11 +67,11 @@ class OdomToPath:
         
         rate = rospy.Rate(50) 
         while(not rospy.is_shutdown()):
-            self.br.sendTransform(  (0, 0, 0),
-                                    tf.transformations.quaternion_from_euler(0, 0, 0),
-                                    rospy.Time.now(),
-                                    self.path.header.frame_id,
-                                    'world')
+            # self.br.sendTransform(  (0, 0, 0),
+            #                         tf.transformations.quaternion_from_euler(0, 0, 0),
+            #                         rospy.Time.now(),
+            #                         self.path.header.frame_id,
+            #                         'world')
             rate.sleep()
 
 

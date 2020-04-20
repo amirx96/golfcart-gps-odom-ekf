@@ -18,7 +18,11 @@ class golfcart_ekf:
         rospy.init_node('golfcart_ekf')
         # Parameters
         self.L = 3.4
-        self.SR = 22
+        self.SR = 22.17144334821909
+        self.bias = np.array(   [ -0.0026683898125025923, -0.000956410201558852, -5.772309828229052e-05] )
+        self.misa = np.array(  [[ 1.00000000e+00, -2.82526466e-04, -1.24647919e-02], \
+                                [-2.82526466e-04,  1.00000000e+00, -6.78931811e-03], \
+                                [-1.24647919e-02, -6.78931811e-03,  1.00000000e+00]])
 
         # create subscribers
         self.vn300_imu_sub      = rospy.Subscriber('/vectornav/imu',    sensors,    self.predict_step_imu)
@@ -34,8 +38,8 @@ class golfcart_ekf:
         self.path_pub  = rospy.Publisher('golfcart_ekf/path',  Path,     queue_size=10, latch=True)
 
         self.state_odom = Odometry()
-        self.state_odom.header.frame_id = 'golfcart'
-        self.state_odom.child_frame_id  = 'world'
+        self.state_odom.header.frame_id = 'world'
+        self.state_odom.child_frame_id  = 'vectornav'
 
         self.br = tf.TransformBroadcaster()
 
@@ -64,15 +68,15 @@ class golfcart_ekf:
         self.state[2] = -math.pi/2
 
         self.Q = np.zeros([6,6])
-        np.fill_diagonal( self.Q, [0.1, 0.1, 0.1, 0.01, 0.01, 0.01] )
+        np.fill_diagonal( self.Q, [0.1, 0.1, 0.01, 0.01, 0.01, 0.01] ) # states for IMU is [x,y,theta,vx,vy,omega]
 
         self.state_cov = self.Q
         
         self.R_pcm = np.zeros([3,3])
-        np.fill_diagonal( self.R_pcm, [0.05, 0.07, 0.01] )
+        np.fill_diagonal( self.R_pcm, [0.05, 0.07, 0.01] ) # states for pacmod is [x,y,theta]
 
         self.R_gps = np.zeros([3,3])
-        np.fill_diagonal( self.R_gps, [0.4, 0.4, 0.75] )
+        np.fill_diagonal( self.R_gps, [0.6, 0.6, 0.65] ) # state for GPS is [x,y,theta] (theta is hard to estimate if the speed is < 1m/s)
 
     def predict_step_imu(self, msg):
         if self.accel_time_init:
@@ -94,9 +98,12 @@ class golfcart_ekf:
             B[4,1] =  dt*math.cos(self.state[2])
             B[5,2] =  1.0
 
-            U = np.array([[msg.Accel.x],[msg.Accel.y],[-msg.Gyro.z]])
+            U = np.array([[msg.Accel.x] - self.bias[0],[msg.Accel.y] - self.bias[1],[-msg.Gyro.z] - self.bias[2]])
 
-            self.state = np.matmul(F, self.state) + np.matmul(B, U)
+            self.state = np.matmul(F, self.state) + np.matmul(B, np.matmul (self.misa, U) )
+
+            self.state[2] = (self.state[2][0] + math.pi) % (2* math.pi) - math.pi # wrap to 2pi
+
             
             # P_k|k-1 = F_k * P_k-1|k-1 * F_k^T + Q_k
             self.state_cov = np.matmul(F, np.matmul(self.state_cov, F.T)) + self.Q
@@ -108,7 +115,6 @@ class golfcart_ekf:
         
     
     def update_step_pacmod(self, speed_msg, steer_msg):
-        
         if self.pacmod_time_init:
 
             z = np.array([  [speed_msg.vehicle_speed * math.cos(self.state[2])] , \
@@ -150,9 +156,9 @@ class golfcart_ekf:
             self.lon_lat_init = True
             self.lat_home = msg.LLA.x
             self.lon_home = msg.LLA.y
+            rospy.loginfo("[ins_to_path] Initial LLA X %f, LLA Y %f",self.lat_home,self.lon_home)
 
-        elif not msg.UtcTime.millisecond == self.last_gps_time:
-            
+        elif not msg.UtcTime.millisecond == self.last_gps_time:  # do this because vectornav GPS updates come at 50 hz but are timestmaped at 20 hz
             # Ellipsoidal model calculation of Earth
             a = 6378137.0000
             b = 6356752.3142
@@ -203,7 +209,7 @@ class golfcart_ekf:
 
     def run(self):
 
-        rate = rospy.Rate(50) # 10 Hz
+        rate = rospy.Rate(50) # 50 Hz
         while(not rospy.is_shutdown()):
             self.state_odom.header.stamp = rospy.Time.now()
             self.state_odom.pose.pose.position = Point(self.state[0],self.state[1],0)
@@ -216,11 +222,6 @@ class golfcart_ekf:
 
             self.state_pub.publish( self.state_odom )
 
-            self.br.sendTransform(( 0, 0, 0),
-                                    tf.transformations.quaternion_from_euler(0, 0, 0),
-                                    rospy.Time.now(),
-                                    self.state_odom.header.frame_id,
-                                    'world')
 
             rate.sleep()
 

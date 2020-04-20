@@ -162,7 +162,8 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 install(PROGRAMS
-  nodes/EKF
+  nodes/full_ekf
+  nodes/vectornav_ekf
   nodes/ins_to_path
   nodes/odom_to_path
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
