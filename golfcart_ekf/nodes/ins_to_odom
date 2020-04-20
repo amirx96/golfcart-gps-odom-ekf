@@ -4,10 +4,11 @@ import rospy
 import tf
 import math 
 
-from geometry_msgs.msg  import PoseStamped, Point, PoseWithCovariance, TwistWithCovariance, Quaternion
-from nav_msgs.msg       import Odometry, Path
-from std_msgs.msg       import Header
-from vn300.msg          import gps, ins
+from geometry_msgs.msg          import PoseStamped, Point, PoseWithCovariance, TwistWithCovariance, Quaternion
+from nav_msgs.msg               import Odometry, Path
+from visualization_msgs.msg     import Marker
+from std_msgs.msg               import Header
+from vn300.msg                  import gps, ins
 
 class OdomToPath:
     def __init__(self):
@@ -22,6 +23,7 @@ class OdomToPath:
         self.time_init = False
         self.time_prev = rospy.rostime.Time()
         self.header_prev = Header()
+        self.c_yaw = 0.0
 
 
     def to_path(self, msg):
@@ -53,7 +55,8 @@ class OdomToPath:
             pose = PoseWithCovariance()
             pose.pose.position = point
             pose.pose.orientation = Quaternion(0,0, math.sin(c_yaw/2),math.cos(c_yaw/2))
-            pose.covariance[0] = msg.PosUncertainty**2 
+            pose.covariance[0] = msg.PosUncertainty**2
+            pose.covariance[1] = msg.PosUncertainty**2  
             pose.covariance[35] = msg.YawUncertainty**2
             
             twist = TwistWithCovariance()
@@ -63,26 +66,26 @@ class OdomToPath:
 
             self.odom.header.frame_id = 'world'
             self.odom.header.stamp = rospy.Time.now()
-            self.odom.header.seq = msg.header.seq
+            # self.odom.header.seq = msg.header.seq
             self.odom.pose = pose
             self.odom.twist = twist
 
             self.odom_pub.publish(self.odom)
-        
+        self.br.sendTransform(  (self.odom.pose.pose.position.x, self.odom.pose.pose.position.y, 0.0),
+                        tf.transformations.quaternion_from_euler(0, 0, self.c_yaw),
+                        msg.header.stamp,
+                        'vectornav',
+                        'world')
         self.time_prev = msg.header.stamp.to_sec()
 
 
 
     def run(self):
         
-        rate = rospy.Rate(50) 
+        rate = rospy.Rate(50.0) 
         while(not rospy.is_shutdown()):
-            self.c_yaw = 0.0 # quick fix
-            self.br.sendTransform(  (self.odom.pose.pose.position.x, self.odom.pose.pose.position.y, 0.0),
-                                    tf.transformations.quaternion_from_euler(0, 0, self.c_yaw),
-                                    rospy.Time.now(),
-                                    'vectornav',
-                                    'world')
+            #self.c_yaw = 0.0 # quick fix
+
             rate.sleep()
 
 

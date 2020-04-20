@@ -18,7 +18,7 @@ class golfcart_ekf:
         rospy.init_node('golfcart_ekf')
         # Parameters
         self.L = 3.4 # wheelbase
-        self.SR = 22 # steering ratio
+        self.SR = 20 # steering ratio
         self.imu_x_offset = 0.0
         self.imu_y_offset = 0.0
 
@@ -66,7 +66,7 @@ class golfcart_ekf:
         self.state[2] = -math.pi/2
 
         self.Q = np.zeros([6,6])
-        np.fill_diagonal( self.Q, [0.1, 0.1, 0.1, 0.01, 0.01, 0.01] )
+        np.fill_diagonal( self.Q, [0.1, 0.1, 0.01, 0.01, 0.01, 0.01] )
 
         self.state_cov = self.Q
         
@@ -74,7 +74,7 @@ class golfcart_ekf:
         np.fill_diagonal( self.R_pcm, [0.05, 0.07, 0.01] )
 
         self.R_gps = np.zeros([3,3])
-        np.fill_diagonal( self.R_gps, [0.4, 0.4, 0.75] )
+        np.fill_diagonal( self.R_gps, [0.3, 0.3, 0.65] )
 
     def predict_step_imu(self, msg):
         if self.accel_time_init:
@@ -99,6 +99,11 @@ class golfcart_ekf:
             U = np.array([[msg.Accel.x],[msg.Accel.y],[-msg.Gyro.z]])
 
             self.state = np.matmul(F, self.state) + np.matmul(B, U)
+
+
+            self.state[2] = (self.state[2][0] + math.pi) % (2* math.pi) - math.pi # wrap to 2pi
+            #rospy.loginfo("State X  Y  T  ", self.state[0][0],self.state[1][0],self.state[2][0])
+            #print(self.state)
             
             # P_k|k-1 = F_k * P_k-1|k-1 * F_k^T + Q_k
             self.state_cov = np.matmul(F, np.matmul(self.state_cov, F.T)) + self.Q
