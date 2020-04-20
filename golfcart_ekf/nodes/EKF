@@ -18,8 +18,8 @@ class golfcart_ekf:
         rospy.init_node('golfcart_ekf')
         # Parameters
         self.L = 3.4 # wheelbase
-        self.SR = 20 # steering ratio
-        self.imu_x_offset = 0.0
+        self.SR = 22 # steering ratio
+        self.imu_x_offset = 2.0
         self.imu_y_offset = 0.0
 
         # create subscribers
@@ -102,8 +102,7 @@ class golfcart_ekf:
 
 
             self.state[2] = (self.state[2][0] + math.pi) % (2* math.pi) - math.pi # wrap to 2pi
-            #rospy.loginfo("State X  Y  T  ", self.state[0][0],self.state[1][0],self.state[2][0])
-            #print(self.state)
+
             
             # P_k|k-1 = F_k * P_k-1|k-1 * F_k^T + Q_k
             self.state_cov = np.matmul(F, np.matmul(self.state_cov, F.T)) + self.Q
@@ -115,11 +114,10 @@ class golfcart_ekf:
         
     
     def update_step_pacmod(self, speed_msg, steer_msg):
-        
         if self.pacmod_time_init:
 
-            z = np.array([  [speed_msg.vehicle_speed * math.cos(self.state[2]) + self.imu_x_offset] , \
-                            [speed_msg.vehicle_speed * math.sin(self.state[2]) + self.imu_y_offset] , \
+            z = np.array([  [speed_msg.vehicle_speed * math.cos(self.state[2]) + self.imu_x_offset * math.cos(self.state[2])] , \
+                            [speed_msg.vehicle_speed * math.sin(self.state[2]) + self.imu_x_offset * math.sin(self.state[2])] , \
                             [speed_msg.vehicle_speed / self.L * math.tan(steer_msg.output / self.SR) ] ])
 
             self.H_pcm = np.zeros([3,6])
@@ -159,8 +157,7 @@ class golfcart_ekf:
             self.lon_home = msg.LLA.y
             rospy.loginfo("[ins_to_path] Initial LLA X %f, LLA Y %f",self.lat_home,self.lon_home)
 
-        elif not msg.UtcTime.millisecond == self.last_gps_time:
-            
+        elif not msg.UtcTime.millisecond == self.last_gps_time:  # do this because vectornav GPS updates come at 50 hz but are timestmaped at 20 hz
             # Ellipsoidal model calculation of Earth
             a = 6378137.0000
             b = 6356752.3142
@@ -211,7 +208,7 @@ class golfcart_ekf:
 
     def run(self):
 
-        rate = rospy.Rate(50) # 10 Hz
+        rate = rospy.Rate(50) # 50 Hz
         while(not rospy.is_shutdown()):
             self.state_odom.header.stamp = rospy.Time.now()
             self.state_odom.pose.pose.position = Point(self.state[0],self.state[1],0)
