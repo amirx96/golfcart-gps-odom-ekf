@@ -17,6 +17,7 @@ class OdomToPath:
         self.br = tf.TransformBroadcaster()
         self.odom = Odometry()
         self.odom.header.frame_id = 'world'
+        self.odom.child_frame_id = 'vectornav'
 
         self.time_init = False
         self.time_prev = rospy.rostime.Time()
@@ -44,7 +45,8 @@ class OdomToPath:
             dlat = msg.LLA.x - self.lat_home
             dE = R * math.radians(dlon)     
             dN = R * math.radians(dlat)
-            c_yaw = msg.RPY.z * (math.pi/180.0)     
+            c_yaw =  (90 - msg.RPY.z )* (math.pi/180.0)
+            self.c_yaw = c_yaw # quick fix     
 
             point = Point(dE,dN,0)
 
@@ -59,7 +61,7 @@ class OdomToPath:
             twist.twist.linear.y = -msg.NedVel.y*math.sin(c_yaw) + msg.NedVel.x*math.cos(c_yaw)
 
 
-            self.odom.header.frame_id = msg.header.frame_id
+            self.odom.header.frame_id = 'world'
             self.odom.header.stamp = rospy.Time.now()
             self.odom.header.seq = msg.header.seq
             self.odom.pose = pose
@@ -75,10 +77,11 @@ class OdomToPath:
         
         rate = rospy.Rate(50) 
         while(not rospy.is_shutdown()):
-            self.br.sendTransform(  (0, 0, 0),
-                                    tf.transformations.quaternion_from_euler(0, 0, 0),
+            self.c_yaw = 0.0 # quick fix
+            self.br.sendTransform(  (self.odom.pose.pose.position.x, self.odom.pose.pose.position.y, 0.0),
+                                    tf.transformations.quaternion_from_euler(0, 0, self.c_yaw),
                                     rospy.Time.now(),
-                                    self.odom.header.frame_id,
+                                    'vectornav',
                                     'world')
             rate.sleep()
 

@@ -52,7 +52,7 @@ class OdomToPath:
             pose.header = msg.header
             pose.pose.position = point
 
-            self.path.header.frame_id = msg.header.frame_id
+            self.path.header.frame_id = 'world'
             self.path.header.stamp = rospy.Time.now()
             self.path.header.seq = msg.header.seq
             self.path.poses.append(pose)
@@ -67,11 +67,11 @@ class OdomToPath:
         
         rate = rospy.Rate(50) 
         while(not rospy.is_shutdown()):
-            self.br.sendTransform(  (0, 0, 0),
-                                    tf.transformations.quaternion_from_euler(0, 0, 0),
-                                    rospy.Time.now(),
-                                    self.path.header.frame_id,
-                                    'world')
+            # self.br.sendTransform(  (0, 0, 0),
+            #                         tf.transformations.quaternion_from_euler(0, 0, 0),
+            #                         rospy.Time.now(),
+            #                         self.path.header.frame_id,
+            #                         'world')
             rate.sleep()
 
 
