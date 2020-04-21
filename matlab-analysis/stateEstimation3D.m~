@@ -5,7 +5,7 @@ addpath('deg2utm/');
 clear;
 clc;
 close all;
-bagname = 'bag1';
+bagname = 'bag2';
 acc_gyro = csvread(strcat(bagname, '/accel_gyro.csv'));
 gps = csvread(strcat(bagname, '/gps.csv'));
 orientation = csvread(strcat(bagname, '/orentation.csv'));
@@ -76,7 +76,7 @@ NED_estimated = [initial_northing, initial_easting, initial_altitude];
 RPY_estimated = [initial_roll, initial_pitch, initial_yaw];
 VNED_estimated = [];
 t0 = gps(1,1);
-sigma = [sqrt(P(1,1)), sqrt(P(2,2)), sqrt(P(3,3)), sqrt(P(4,4)), sqrt(P(5,5)), sqrt(P(6,6))];
+sigma = [];
 for i = 1:no_of_ts
     dt_imu = acc_gyro(i, 1) - t0;
     phi = stateVector(6);
@@ -160,7 +160,8 @@ p = plot(gps(:, 1), NEDRPY(:, 2), '-r',...
 hold on;
 q = plot([gps(1,1);acc_gyro(:, 1)], NED_estimated(:, 2), '-g',...
     'LineWidth',2);
-hold off;
+hold on;
+r 
 grid;
 ylabel('Easting', 'FontSize',12,'FontWeight','bold','Color','r');
 hold off;
@@ -172,7 +173,6 @@ p = plot(gps(:, 1), NEDRPY(:, 1), '-r',...
 hold on;
 q = plot([gps(1,1);acc_gyro(:, 1)], NED_estimated(:, 1), '-g',...
     'LineWidth',2);
-hold off;
 grid;
 ylabel('Northing', 'FontSize',12,'FontWeight','bold','Color','r');
 hold off;
@@ -184,7 +184,6 @@ p = plot(gps(:, 1), NEDRPY(:, 3), '-r',...
 hold on;
 q = plot([gps(1,1);acc_gyro(:, 1)], NED_estimated(:, 3), '-g',...
     'LineWidth',2);
-hold off;
 grid;
 ylabel('Altitude', 'FontSize',12,'FontWeight','bold','Color','r');
 hold off;
@@ -257,5 +256,3 @@ grid;
 ylabel('Vd', 'FontSize',12,'FontWeight','bold','Color','r');
 hold off;
 legend([p, q], {'INS', 'GPS+IMU'})
-
-

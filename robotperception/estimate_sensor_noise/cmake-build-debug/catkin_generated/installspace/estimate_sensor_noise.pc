@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: estimate_sensor_noise
+Description: Description of estimate_sensor_noise
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
