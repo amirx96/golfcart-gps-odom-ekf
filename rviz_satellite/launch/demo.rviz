@@ -7,13 +7,16 @@ Panels:
         - /Global Options1
         - /Status1
         - /AerialMapDisplay1
-        - /AerialMapDisplay1/Status1
         - /Axes1
         - /Odometry1
         - /Odometry1/Covariance1
         - /Odometry2
         - /Odometry2/Shape1
         - /Path2
+        - /Grid1
+        - /Path3
+        - /Odometry3
+        - /Odometry3/Shape1
       Splitter Ratio: 0.5
     Tree Height: 714
   - Class: rviz/Selection
@@ -42,23 +45,23 @@ Toolbars:
 Visualization Manager:
   Class: ""
   Displays:
-    - Alpha: 1
-      Blocks: 6
+    - Alpha: 0.5
+      Blocks: 3
       Class: rviz_plugins/AerialMapDisplay
-      Draw Behind: false
+      Draw Behind: true
       Enabled: true
       Name: AerialMapDisplay
       Object URI: https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWRhcndlc2giLCJhIjoiY2ozbHpkOXp4MDEzbDMyb3plcnd4dzBsbSJ9.b0nUVzEek7XJeTFjfVqwsw
-      Topic: /vectornav/gps
+      Topic: /vectornav/ins
       Value: true
       Zoom: 22
     - Class: rviz/Axes
-      Enabled: true
+      Enabled: false
       Length: 1
       Name: Axes
       Radius: 0.10000000149011612
       Reference Frame: vectornav
-      Value: true
+      Value: false
     - Angle Tolerance: 0.10000000149011612
       Class: rviz/Odometry
       Covariance:
@@ -77,7 +80,7 @@ Visualization Manager:
           Value: true
         Value: true
       Enabled: true
-      Keep: 100
+      Keep: 1
       Name: Odometry
       Position Tolerance: 0.10000000149011612
       Shape:
@@ -111,7 +114,7 @@ Visualization Manager:
           Value: true
         Value: false
       Enabled: true
-      Keep: 100
+      Keep: 1
       Name: Odometry
       Position Tolerance: 0.10000000149011612
       Shape:
@@ -173,6 +176,81 @@ Visualization Manager:
       Topic: /golfcart_ekf/path
       Unreliable: false
       Value: true
+    - Alpha: 0.5
+      Cell Size: 1
+      Class: rviz/Grid
+      Color: 160; 160; 164
+      Enabled: true
+      Line Style:
+        Line Width: 0.029999999329447746
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 10
+      Reference Frame: vectornav
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 233; 185; 110
+      Enabled: true
+      Head Diameter: 0.30000001192092896
+      Head Length: 0.20000000298023224
+      Length: 0.30000001192092896
+      Line Style: Lines
+      Line Width: 0.029999999329447746
+      Name: Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: None
+      Radius: 0.029999999329447746
+      Shaft Diameter: 0.10000000149011612
+      Shaft Length: 0.10000000149011612
+      Topic: /golfcart_ekf/combined_path
+      Unreliable: false
+      Value: true
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: false
+      Enabled: true
+      Keep: 1
+      Name: Odometry
+      Position Tolerance: 0.10000000149011612
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.10000000149011612
+        Color: 233; 185; 110
+        Head Length: 0.30000001192092896
+        Head Radius: 0.10000000149011612
+        Shaft Length: 1
+        Shaft Radius: 0.05000000074505806
+        Value: Arrow
+      Topic: /golfcart_ekf/combined_state
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -201,7 +279,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 59.38999557495117
+      Distance: 9.166513442993164
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -216,10 +294,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.934796929359436
+      Pitch: 1.1753978729248047
       Target Frame: vectornav
       Value: Orbit (rviz)
-      Yaw: 6.2585835456848145
+      Yaw: 1.1403982639312744
     Saved: ~
 Window Geometry:
   Displays:

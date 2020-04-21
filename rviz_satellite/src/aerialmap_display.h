@@ -19,7 +19,7 @@ limitations under the License. */
 #include <ros/ros.h>
 #include <ros/time.h>
 #include <rviz/display.h>
-#include <vn300/gps.h>
+#include <vn300/ins.h>
 
 #include <OGRE/OgreTexture.h>
 #include <OGRE/OgreMaterial.h>
@@ -89,7 +89,7 @@ protected:
   /**
    * GPS topic callback
    */
-  void navFixCallback(vn300::gpsConstPtr const& msg);
+  void navFixCallback(vn300::insConstPtr const& msg);
 
   /**
    * Load images to cache (non-blocking)
@@ -156,7 +156,7 @@ protected:
   // tile management
   bool dirty_;
   bool received_msg_;
-  vn300::gps ref_fix_;
+  vn300::ins ref_fix_;
   TileCacheDelay<OgreTile> tileCache_;
   /// Last request()ed tile id (which is the center tile)
   boost::optional<TileId> lastCenterTile_;

@@ -46,7 +46,7 @@ namespace rviz
 AerialMapDisplay::AerialMapDisplay() : Display(), dirty_(false), received_msg_(false)
 {
   topic_property_ =
-      new RosTopicProperty("Topic", "", QString::fromStdString(ros::message_traits::datatype<vn300::gps>()),
+      new RosTopicProperty("Topic", "", QString::fromStdString(ros::message_traits::datatype<vn300::ins>()),
                            "sensor_msgs::NavSatFix topic to subscribe to.", this, SLOT(updateTopic()));
 
   alpha_property_ =
@@ -248,7 +248,7 @@ void AerialMapDisplay::update(float, float)
   context_->queueRender();
 }
 
-void AerialMapDisplay::navFixCallback(vn300::gpsConstPtr const& msg)
+void AerialMapDisplay::navFixCallback(vn300::insConstPtr const& msg)
 {
   ref_fix_ = *msg;
 
