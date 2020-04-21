@@ -13,6 +13,12 @@ We use the IMU to predict and propagate the 3D pose of the robot. The IMU measur
 ## Update
 We correct the IMU prediction using GPS measurements and Orientation measurements. Latitudes and Longitudes are first converted to Northings and Eastings. Ideally, a magnetometer is used for determining the bearing but the INS we use provides the orientation in Frame W. So, we use that. The portion of the code where it is done is provided [here](https://github.com/amirx96/golfcart-gps-odom-ekf/blob/fd9d50f91709be9c295aee27ec22ead0fa7f0f59/matlab-analysis/stateEstimation3D.m#L106-L117)
 
+## Results
+![alt text](figures/XYPlot.jpg "Schematic")
+
+![alt text](figures/XYZRPYvsT.jpg "Schematic")
+
+![alt text](figures/Vxyz.jpg "Schematic")
 
 ## Running the code
 Open the file named [stateEstimation3D.m](https://github.com/amirx96/golfcart-gps-odom-ekf/blob/master/matlab-analysis/stateEstimation3D.m) and hit Run. 
