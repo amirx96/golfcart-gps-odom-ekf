@@ -1,8 +1,0 @@
-prefix=/usr/local
-
-Name: kinematic_model
-Description: Description of kinematic_model
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

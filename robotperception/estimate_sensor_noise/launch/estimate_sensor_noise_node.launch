@@ -1,8 +1,0 @@
-
-<launch>
-    <param name="/use_sim_time" value="true" />
-	<node pkg="gps_measurement" type="gps2xy.py" name="gps2xy"  output="screen" />
-    <node pkg="estimate_sensor_noise" type="estimate_sensor_noise_node" name="estimate_sensor_noise"  output="screen" >
-    </node>
-
-</launch>
