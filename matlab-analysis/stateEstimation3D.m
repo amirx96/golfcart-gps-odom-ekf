@@ -5,7 +5,7 @@ addpath('deg2utm/');
 clear;
 clc;
 close all;
-bagname = 'bag1';
+bagname = 'bag3';
 acc_gyro = csvread(strcat(bagname, '/accel_gyro.csv'));
 gps = csvread(strcat(bagname, '/gps.csv'));
 orientation = csvread(strcat(bagname, '/orentation.csv'));
