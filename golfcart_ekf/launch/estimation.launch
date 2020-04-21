@@ -5,6 +5,7 @@
 
 	<node name="ins_to_path" pkg="golfcart_ekf" type="ins_to_path" output="screen"/>
 	<node name="ins_to_odom" pkg="golfcart_ekf" type="ins_to_odom" output="screen"/>
+	<node name="odom_covariance_maarker" pkg="golfcart_ekf" type="odom_covariance_marker" output="screen"/>
 	<node name="odom_to_path" pkg="golfcart_ekf" type="odom_to_path" output="screen"/>
 
 	<node pkg="rosbag" type="play" name="player" args="--clock $(find golfcart_ekf)/bagfiles/2.bag"/>

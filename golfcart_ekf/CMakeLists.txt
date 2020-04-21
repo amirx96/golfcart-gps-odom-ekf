@@ -166,6 +166,8 @@ install(PROGRAMS
   nodes/vectornav_ekf
   nodes/ins_to_path
   nodes/odom_to_path
+  nodes/ins_to_odom
+  nodes/odom_covariance_marker
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
