@@ -7,3 +7,6 @@ This package contains an EKF implementation for fusing information coming from a
 ## Setup
 MATLAB is required. 
 
+## Running the code
+
+Open the file named stateEstimation3D.m and hit Run. 
