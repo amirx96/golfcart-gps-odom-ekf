@@ -18,7 +18,7 @@ class OdomToPath:
         self.br = tf.TransformBroadcaster()
         self.odom = Odometry()
         self.odom.header.frame_id = 'world'
-        self.odom.child_frame_id = 'vectornav'
+        self.odom.child_frame_id = 'world' # NED Velocities
 
         self.time_init = False
         self.time_prev = rospy.rostime.Time()
@@ -60,9 +60,10 @@ class OdomToPath:
             pose.covariance[35] = msg.YawUncertainty**2
             
             twist = TwistWithCovariance()
-            twist.twist.linear.x = msg.NedVel.y*math.cos(c_yaw) + msg.NedVel.x*math.sin(c_yaw)
-            twist.twist.linear.y = -msg.NedVel.y*math.sin(c_yaw) + msg.NedVel.x*math.cos(c_yaw)
-
+            # twist.twist.linear.x = msg.NedVel.y*math.cos(c_yaw) + msg.NedVel.x*math.sin(c_yaw)
+            # twist.twist.linear.y = -msg.NedVel.y*math.sin(c_yaw) + msg.NedVel.x*math.cos(c_yaw)
+            twist.twist.linear.x = msg.NedVel.x
+            twist.twist.linear.y = msg.NedVel.y
 
             self.odom.header.frame_id = 'world'
             self.odom.header.stamp = rospy.Time.now()
