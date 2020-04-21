@@ -1,0 +1,3 @@
+[submodule "3rd_party/rviz_satellite"]
+	path = 3rd_party/rviz_satellite
+	url = https://github.com/amirx96/rviz_satellite
