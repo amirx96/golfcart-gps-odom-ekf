@@ -21,7 +21,7 @@ class golfcart_ekf:
         # Parameters
         self.L = 3.4
         self.SR = 22.17144334821909
-        self.x_vn_offset = -2.2
+        self.x_vn_offset = -0.0
 
         # create subscribers
         self.vn300_ins_sub = rospy.Subscriber(
@@ -121,11 +121,12 @@ class golfcart_ekf:
             dT = (90.0 - msg.RPY.z)             # degrees
 
             R_ins = np.zeros([5, 5])
-            R_ins[0, 0] = msg.PosUncertainty + 100
-            R_ins[1, 1] = msg.PosUncertainty + 100
-            R_ins[2, 2] = msg.YawUncertainty + 100
-            R_ins[3, 3] = msg.VelUncertainty + 5000
-            R_ins[4, 4] = msg.VelUncertainty + 5000
+            R_ins[0, 0] = msg.PosUncertainty + 100 + (5000 if (msg.NedVel.x**2 + msg.NedVel.y**2)**0.5 < 5e-1 else 0) # if velocity is <0 add lots of uncertainty
+            R_ins[1, 1] = msg.PosUncertainty + 100 + (5000 if (msg.NedVel.x**2 + msg.NedVel.y**2)**0.5 < 5e-1 else 0)
+            R_ins[2, 2] = msg.YawUncertainty + 100 + (5000 if (msg.NedVel.x**2 + msg.NedVel.y**2)**0.5 < 5e-1 else 0)
+            R_ins[3, 3] = msg.VelUncertainty + 5000 + (5000 if (msg.NedVel.x**2 + msg.NedVel.y**2)**0.5 < 5e-1 else 0)
+            R_ins[4, 4] = msg.VelUncertainty + 5000 + (5000 if (msg.NedVel.x**2 + msg.NedVel.y**2)**0.5 < 5e-1 else 0)
+            #print(R_ins)
 
             # # Measurement in matrix format
             z = np.array([[dE], [dN], [dT], [msg.NedVel.x], [msg.NedVel.y]])
@@ -153,11 +154,11 @@ class golfcart_ekf:
 
     def update_step_pacmod(self, speed_msg, steer_msg):
 
-        z = np.array([[0.033 * speed_msg.vehicle_speed * math.cos(math.pi/180.0 * self.state[2]) - self.x_vn_offset*math.cos(math.pi/180.0 * self.state[2])],
-                      [0.033 * speed_msg.vehicle_speed * math.sin(
+        z = np.array([[1 * speed_msg.vehicle_speed * math.cos(math.pi/180.0 * self.state[2]) - self.x_vn_offset*math.cos(math.pi/180.0 * self.state[2])],
+                      [1 * speed_msg.vehicle_speed * math.sin(
                           math.pi/180.0 * self.state[2]) - self.x_vn_offset*math.sin(math.pi/180.0 * self.state[2])],
-                      [0.033 * 180 / math.pi * (speed_msg.vehicle_speed / self.L) * math.tan(steer_msg.output / self.SR)]])
-
+                      [1 * 180 / math.pi * (speed_msg.vehicle_speed / self.L) * math.tan(steer_msg.output / self.SR)]])
+        
         # y_k       = z_k - h(xhat_k|k-1)
         self.y_pcm = z - self.state[3:6]
        # print(self.y_pcm)
@@ -173,6 +174,7 @@ class golfcart_ekf:
 
         # # xhat_k|k  = xhat_k|k-1 + K_k * y_k
         self.state = self.state + np.matmul(self.K_pcm, self.y_pcm)
+        #print(self.state)
         #self.state[2] = (self.state[2][0] + math.pi) % (2* math.pi) - math.pi
         # # P_k|k     = (I - K_k * H_k) * P_k|k-1
         self.state_cov = np.matmul(
