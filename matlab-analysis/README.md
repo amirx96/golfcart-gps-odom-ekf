@@ -9,4 +9,4 @@ MATLAB is required.
 
 ## Running the code
 
-Open the file named stateEstimation3D.m and hit Run. 
+Open the file named [stateEstimation3D.m](https://github.com/amirx96/golfcart-gps-odom-ekf/blob/master/matlab-analysis/stateEstimation3D.m) and hit Run. 
