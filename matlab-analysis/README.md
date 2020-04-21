@@ -16,11 +16,27 @@ We correct the IMU prediction using GPS measurements and Orientation measurement
 ## Results
 Please click on the plots to get an elarged view.
 
+### Dataset1
 ![alt text](figures/XYPlot.jpg "Schematic")
 
 ![alt text](figures/XYZRPYvsT.jpg "Schematic")
 
 ![alt text](figures/Vxyz.jpg "Schematic")
+
+### Dataset2
+![alt text](figures/XYPlot2.jpg "Schematic")
+
+![alt text](figures/XYZRPYvsT2.jpg "Schematic")
+
+![alt text](figures/Vxyz2.jpg "Schematic")
+
+### Dataset3
+![alt text](figures/XYPlot3.jpg "Schematic")
+
+![alt text](figures/XYZRPYvsT3.jpg "Schematic")
+
+![alt text](figures/Vxyz3.jpg "Schematic")
+
 
 ## Running the code
 Open the file named [stateEstimation3D.m](https://github.com/amirx96/golfcart-gps-odom-ekf/blob/master/matlab-analysis/stateEstimation3D.m) and hit Run. 
