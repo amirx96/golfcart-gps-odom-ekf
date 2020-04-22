@@ -11,12 +11,12 @@ This repository is the workspace for the Spring 2020 final projects in two class
 - Amir Darwesh (MEEN), M.S. Candidate
 - Jacob Hartzer (MEEN), M.S. Candidate
 - Subodh Mishra (MEEN), Ph.D Candidate
-- Keith Sponsoller (MEEN), Ph.D Candidate
+- Keith Sponsler (MEEN), Ph.D Candidate
 
 ### STAT 654
 - Amir Darwesh (MEEN), M.S. Candidate
 - Jacob Hartzer (MEEN), M.S. Candidate
-- Keith Sponsoller (MEEN), Ph.D Candidate
+- Keith Sponsler (MEEN), Ph.D Candidate
 
 
 ## Code Structure
