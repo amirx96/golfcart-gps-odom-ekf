@@ -18,6 +18,11 @@ This repository is the workspace for the Spring 2020 final projects in two class
 - Jacob Hartzer (MEEN), M.S. Candidate
 - Keith Sponsler (MEEN), Ph.D Candidate
 
+## Video Demos
+Approach 1 - EKF with PacMOD, GPS, IMU
+[![Watch the video](https://img.youtube.com/vi/HNMhLeIcZPI/maxresdefault.jpg)](https://www.youtube.com/watch?v=HNMhLeIcZPI)
+Approach 2 - EKF with PacMOD, INS
+[![Watch the video](https://img.youtube.com/vi/_3BHLdVM6Ic/maxresdefault.jpg)](https://www.youtube.com/watch?v=_3BHLdVM6Ic)
 
 ## Code Structure
 ```bash
