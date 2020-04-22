@@ -5,7 +5,7 @@ addpath('deg2utm/');
 clear;
 clc;
 close all;
-bagname = 'bag3';
+bagname = 'bag1';
 acc_gyro = csvread(strcat(bagname, '/accel_gyro.csv'));
 gps = csvread(strcat(bagname, '/gps.csv'));
 orientation = csvread(strcat(bagname, '/orentation.csv'));
@@ -258,4 +258,10 @@ ylabel('Vd', 'FontSize',12,'FontWeight','bold','Color','r');
 hold off;
 legend([p, q], {'INS', 'GPS+IMU'})
 
-
+%% 
+figure(4)
+plot(sigma(1:100, 1), '-r',...
+    'LineWidth',5)
+grid;
+ylabel('Uncertainty along X [m]', 'FontSize',25,'FontWeight','bold','Color','k');
+title('Evolution of Uncertainty', 'FontSize',25,'FontWeight','bold','Color','k');
