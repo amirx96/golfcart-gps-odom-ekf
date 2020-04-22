@@ -5,7 +5,7 @@ addpath('deg2utm/');
 clear;
 clc;
 close all;
-bagname = 'bag2';
+bagname = 'bag3';
 acc_gyro = csvread(strcat(bagname, '/accel_gyro.csv'));
 gps = csvread(strcat(bagname, '/gps.csv'));
 orientation = csvread(strcat(bagname, '/orentation.csv'));
@@ -125,9 +125,9 @@ for i = 1:no_of_ts
             error_x = error_x + abs(NEDRPY(gps_idx, 1)-stateVector(1));
             error_y = error_y + abs(NEDRPY(gps_idx, 2)-stateVector(2));
             error_z = error_z + abs(NEDRPY(gps_idx, 3)-stateVector(3));
-            error_roll = error_roll + abs(NEDRPY(gps_idx, 4)-stateVector(7));
-            error_pitch = error_pitch + abs(NEDRPY(gps_idx, 5)-stateVector(8));
-            error_yaw = error_yaw + abs(NEDRPY(gps_idx, 6)-stateVector(9));
+            error_roll = error_roll + abs(NEDRPY(gps_idx, 7)-stateVector(7));
+            error_pitch = error_pitch + abs(NEDRPY(gps_idx, 8)-stateVector(8));
+            error_yaw = error_yaw + abs(NEDRPY(gps_idx, 9)-stateVector(9));
             counter = counter + 1;
             gps_idx = gps_idx+1;
             stateVector(7) = atan2(sin(stateVector(7)), cos(stateVector(7)));
@@ -281,12 +281,10 @@ ylabel('Uncertainty along X [m]', 'FontSize',25,'FontWeight','bold','Color','k')
 title('Evolution of Uncertainty', 'FontSize',25,'FontWeight','bold','Color','k');
 
 %%
-err_x = error_x/counter;
-err_y = error_y/counter;
-err_z = error_z/counter;
+err_x = error_x/counter
+err_y = error_y/counter
+err_z = error_z/counter
 
-err_roll = error_roll/counter;
-err_pitch = error_pitch/counter;
-err_yaw = error_yaw/counter;
-
-disp([err_x, err_y, err_z, err_roll, err_pitch, err_yaw]);
+err_roll = error_roll/counter
+err_pitch = error_pitch/counter
+err_ = error_yaw/counter
