@@ -5,7 +5,7 @@ addpath('deg2utm/');
 clear;
 clc;
 close all;
-bagname = 'bag2';
+bagname = 'bag1';
 acc_gyro = csvread(strcat(bagname, '/accel_gyro.csv'));
 gps = csvread(strcat(bagname, '/gps.csv'));
 orientation = csvread(strcat(bagname, '/orentation.csv'));
@@ -23,6 +23,7 @@ initial_yaw = orientation(1, 4);
                                                  initial_LatLong(2));
 
 NEDRPY = [];
+
 for i=1:length(gps)
     [e, n, ~] = deg2utm(gps(i, 2), gps(i, 3));
     o = orientation(i, 2:4);
@@ -59,7 +60,7 @@ stateVector(9) = initial_yaw;
 
 dt_imu = 0.02;
 
-P = zeros(9, 9);
+P = 100*ones(9, 9);
 Q = diag([10, 10, 10, 10, 10, 10]); % 6 inputs
 R = diag([0.25, 0.25, 1, 1, 1, 1]); % 5 measurements [N E Roll Pitch Yaw]
 
@@ -75,6 +76,7 @@ NED_estimated = [initial_northing, initial_easting, initial_altitude];
 RPY_estimated = [initial_roll, initial_pitch, initial_yaw];
 VNED_estimated = [];
 t0 = gps(1,1);
+sigma = [sqrt(P(1,1)), sqrt(P(2,2)), sqrt(P(3,3)), sqrt(P(4,4)), sqrt(P(5,5)), sqrt(P(6,6))];
 for i = 1:no_of_ts
     dt_imu = acc_gyro(i, 1) - t0;
     phi = stateVector(6);
@@ -124,6 +126,8 @@ for i = 1:no_of_ts
     VNED_estimated = [VNED_estimated; stateVector(4), stateVector(5), stateVector(6)];
     RPY_estimated = [RPY_estimated; stateVector(7), stateVector(8), stateVector(9)];
     t0 = acc_gyro(i, 1);
+    sigma = [sigma;
+        sqrt(P(1,1)), sqrt(P(2,2)), sqrt(P(3,3)), sqrt(P(4,4)), sqrt(P(5,5)), sqrt(P(6,6))];
 end
 
 %%
@@ -156,6 +160,7 @@ p = plot(gps(:, 1), NEDRPY(:, 2), '-r',...
 hold on;
 q = plot([gps(1,1);acc_gyro(:, 1)], NED_estimated(:, 2), '-g',...
     'LineWidth',2);
+hold off;
 grid;
 ylabel('Easting', 'FontSize',12,'FontWeight','bold','Color','r');
 hold off;
@@ -167,6 +172,7 @@ p = plot(gps(:, 1), NEDRPY(:, 1), '-r',...
 hold on;
 q = plot([gps(1,1);acc_gyro(:, 1)], NED_estimated(:, 1), '-g',...
     'LineWidth',2);
+hold off;
 grid;
 ylabel('Northing', 'FontSize',12,'FontWeight','bold','Color','r');
 hold off;
@@ -178,6 +184,7 @@ p = plot(gps(:, 1), NEDRPY(:, 3), '-r',...
 hold on;
 q = plot([gps(1,1);acc_gyro(:, 1)], NED_estimated(:, 3), '-g',...
     'LineWidth',2);
+hold off;
 grid;
 ylabel('Altitude', 'FontSize',12,'FontWeight','bold','Color','r');
 hold off;
@@ -250,3 +257,11 @@ grid;
 ylabel('Vd', 'FontSize',12,'FontWeight','bold','Color','r');
 hold off;
 legend([p, q], {'INS', 'GPS+IMU'})
+
+%% 
+figure(4)
+plot(sigma(1:100, 1), '-r',...
+    'LineWidth',5)
+grid;
+ylabel('Uncertainty along X [m]', 'FontSize',25,'FontWeight','bold','Color','k');
+title('Evolution of Uncertainty', 'FontSize',25,'FontWeight','bold','Color','k');
