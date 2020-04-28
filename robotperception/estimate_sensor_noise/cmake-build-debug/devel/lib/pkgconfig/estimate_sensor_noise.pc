@@ -1,8 +1,0 @@
-prefix=/home/usl/catkin_ws/src/robotperception/estimate_sensor_noise/cmake-build-debug/devel
-
-Name: estimate_sensor_noise
-Description: Description of estimate_sensor_noise
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
